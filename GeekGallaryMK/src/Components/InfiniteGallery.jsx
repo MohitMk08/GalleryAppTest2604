@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './InfiniteGallery.css';
 
-const InfiniteGallery = () => {
+const InfiniteGallery = ({ searchQuery }) => {
     const [images, setImages] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
-    const [searchQuery, setSearchQuery] = useState(''); // State for search query
     const [selectedImage, setSelectedImage] = useState(null); // State for modal
 
     const fetchImages = useCallback(async () => {
@@ -41,13 +40,6 @@ const InfiniteGallery = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        setImages([]); // Clear current images
-        setPage(1); // Reset page to 1
-        fetchImages(); // Fetch new images based on search query
-    };
-
     const openModal = (image) => {
         setSelectedImage(image);
     };
@@ -58,20 +50,6 @@ const InfiniteGallery = () => {
 
     return (
         <div>
-            <header className="header">
-                <h1>MK Gallery</h1>
-                <form onSubmit={handleSearch} className="search-form">
-                    <input
-                        type="text"
-                        placeholder="Search images..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="search-input"
-                    />
-                    <button type="submit" className="search-button">Search</button>
-                </form>
-            </header>
-
             <div className="gallery">
                 {images.map((image) => (
                     <div
